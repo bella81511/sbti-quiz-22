@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赛龙22周年 · SBTI人格测评</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            max-width: 680px;
+            width: 100%;
+            padding: 48px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+        }
+        .start-screen { text-align: center; padding: 20px 0; }
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: 2px;
+        }
+        .start-screen h1 {
+            font-size: 32px;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        .start-screen .subtitle {
+            font-size: 18px;
+            color: #667eea;
+            margin-bottom: 32px;
+            font-weight: 500;
+        }
+        .start-screen .desc {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+        .start-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            padding: 16px 56px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+        .quiz-area { display: none; }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            margin-bottom: 32px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .question-counter {
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .question-text {
+            font-size: 20px;
+            color: #1a1a2e;
+            font-weight: 600;
+            margin-bottom: 32px;
+            line-height: 1.6;
+            padding: 0 8px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            padding: 18px 24px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 15px;
+            color: #333;
+            line-height: 1.5;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f3ff;
+            transform: translateX(4px);
+        }
+        .option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea08, #764ba208);
+            color: #667eea;
+            font-weight: 500;
+        }
+        .option::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+        }
+        .option:hover::after, .option.selected::after {
+            border-color: #667eea;
+            background: #667eea;
+        }
+        .option.selected::after {
+            background: #667eea url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E") center/12px no-repeat;
+        }
+        .nav-btns {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 32px;
+            gap: 16px;
+        }
+        .nav-btn {
+            padding: 12px 28px;
+            border-radius: 24px;
+            border: 2px solid #e9ecef;
+            background: #fff;
+            color: #666;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .nav-btn:hover:not(:disabled) {
+            border-color: #667eea;
+            color: #667eea;
+        }
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .nav-btn.next {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        .loading-screen {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f0f0f0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 24px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .result-screen { display: none; animation: fadeIn 0.6s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-header { text-align: center; margin-bottom: 32px; }
+        .result-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 16px;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .result-title { font-size: 28px; color: #1a1a2e; font-weight: 700; margin-bottom: 8px; }
+        .result-code { font-size: 14px; color: #667eea; font-weight: 600; letter-spacing: 2px; }
+        .result-quote {
+            background: linear-gradient(135deg, #f8f9fa, #f0f3ff);
+            border-left: 4px solid #667eea;
+            padding: 20px 24px;
+            border-radius: 0 12px 12px 0;
+            margin: 24px 0;
+            font-size: 16px;
+            color: #444;
+            line-height: 1.7;
+            font-style: italic;
+        }
+        .result-section { margin: 24px 0; }
+        .result-section h3 {
+            font-size: 16px;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .result-section h3::before {
+            content: '';
+            width: 4px;
+            height: 18px;
+            background: linear-gradient(180deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+        .result-section p, .result-section li { color: #555; font-size: 14px; line-height: 1.8; }
+        .result-section ul { list-style: none; padding-left: 0; }
+        .result-section li { padding: 6px 0; padding-left: 20px; position: relative; }
+        .result-section li::before { content: '▸'; position: absolute; left: 0; color: #667eea; }
+        .partner-tag {
+            display: inline-block;
+            background: #f0f3ff;
+            color: #667eea;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin: 2px;
+            font-weight: 500;
+        }
+        .footnote {
+            background: linear-gradient(135deg, #667eea08, #764ba208);
+            border: 1px dashed #667eea40;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 28px;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.8;
+        }
+        .footnote strong { color: #667eea; }
+        .restart-btn {
+            display: block;
+            width: 100%;
+            margin-top: 32px;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .score-bars { margin: 20px 0; }
+        .score-bar-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        .score-bar-label { width: 80px; color: #555; font-weight: 500; }
+        .score-bar-track {
+            flex: 1;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            margin: 0 12px;
+            overflow: hidden;
+        }
+        .score-bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+        .score-bar-value { width: 30px; text-align: right; color: #667eea; font-weight: 600; }
+        @media (max-width: 480px) {
+            .container { padding: 32px 20px; border-radius: 20px; }
+            .start-screen h1 { font-size: 26px; }
+            .question-text { font-size: 18px; }
+            .option { padding: 16px 18px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="start-screen" id="startScreen">
+            <div class="badge">赛龙22周年 · SBTI</div>
+            <h1>在一起，会更好</h1>
+            <p class="subtitle">Better 2gether</p>
+            <p class="desc">
+                22道题，读懂你的职场人格基因。<br>
+                没有标准答案，只有更真实的自己。<br>
+                发现你在团队中的独特光芒，<br>
+                以及谁是你最默契的搭档。
+            </p>
+            <button class="start-btn" onclick="startQuiz()">开始测试</button>
+        </div>
+        <div class="quiz-area" id="quizArea">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <div class="question-counter" id="questionCounter">第 1 / 22 题</div>
+            <div class="question-text" id="questionText"></div>
+            <div class="options" id="options"></div>
+            <div class="nav-btns">
+                <button class="nav-btn" id="prevBtn" onclick="prevQuestion()" disabled>上一题</button>
+                <button class="nav-btn next" id="nextBtn" onclick="nextQuestion()">下一题</button>
+            </div>
+        </div>
+        <div class="loading-screen" id="loadingScreen">
+            <div class="spinner"></div>
+            <p class="loading-text">正在解析你的职场人格基因...</p>
+        </div>
+        <div class="result-screen" id="resultScreen"></div>
+    </div>
+        <script>
+        const questions = [
+            { text: "当团队突然接到一个充满挑战的新项目，时间紧、要求高，你的第一反应是？", options: [
+                { text: "兴奋！立刻研究怎么把这块肥肉咬下来", scores: { pioneer: 2 } },
+                { text: "先把整体节奏和分工理顺，不能乱", scores: { builder: 2, cpu: 1 } },
+                { text: "先判断客户真正想要的是什么，别走偏", scores: { ctrl: 2 } },
+                { text: "先确认有哪些潜在风险，别一上来就翻车", scores: { last: 2 } }
+            ]},
+            { text: "描述你理想的工作日", options: [
+                { text: "有整块时间专注攻克一个难题", scores: { builder: 2 } },
+                { text: "穿梭在不同会议和对话中，推动事情落地", scores: { doer: 2, link: 1 } },
+                { text: "带领团队冲刺，看着目标一点点达成", scores: { pioneer: 2, doer: 1 } },
+                { text: "自由安排，根据状态切换不同类型工作", scores: { idea: 2 } }
+            ]},
+            { text: "面对行业新变化（如AI冲击），你会", options: [
+                { text: "第一时间试用新工具，想怎么应用到业务", scores: { pioneer: 2, idea: 1 } },
+                { text: "观察同行怎么做，等验证后再跟进", scores: { ctrl: 2 } },
+                { text: "组织学习小组，带团队一起研究", scores: { link: 2, builder: 1 } },
+                { text: "专注把手头工作做到极致，工具只是辅助", scores: { cpu: 2 } }
+            ]},
+            { text: "你的工位桌面通常是", options: [
+                { text: "To Do List通常在桌面最显眼的位置", scores: { doer: 2, cpu: 1 } },
+                { text: "整洁有序，文件分类标签明确", scores: { builder: 2, cpu: 1 } },
+                { text: "贴满团队照片、激励语句，摆满盲盒公仔", scores: { link: 2 } },
+                { text: "极简，只留当前最重要的几样东西", scores: { ctrl: 2, cpu: 1 } }
+            ]},
+            { text: "在跨部门复杂项目中，你常是", options: [
+                { text: "提出大胆方案，推动打破常规的人", scores: { pioneer: 2, idea: 1 } },
+                { text: "提醒风险，确保不踩坑的人", scores: { last: 2 } },
+                { text: "穿针引线，让各方达成共识的人", scores: { link: 2, doer: 1 } },
+                { text: "提供专业输入，提升方案质量的人", scores: { ctrl: 2, builder: 2 } }
+            ]},
+            { text: "一个重要方案开会讨论了40分钟，却一直没有结果，气氛逐渐尴尬，你通常会？", options: [
+                { text: "主动发言，率先打破尴尬局面", scores: { link: 2 } },
+                { text: "总结刚才的重点，帮大家重新聚焦", scores: { ctrl: 2, cpu: 1 } },
+                { text: "提出一个新思路打破僵局", scores: { idea: 2, doer: 1 } },
+                { text: "默默记录关键点，确保没有遗漏", scores: { last: 2, builder: 1 } }
+            ]},
+            { text: "项目执行到一半，发现流程越来越混乱，很多人各干各的，你会？", options: [
+                { text: "拉大家一起重新梳理流程", scores: { link: 2, builder: 1 } },
+                { text: "找到关键节点，推动继续往前", scores: { doer: 2, cpu: 1 } },
+                { text: "检查问题出在哪里", scores: { last: 2 } },
+                { text: "尝试一个更简单的新方式", scores: { idea: 2, pioneer: 1 } }
+            ]},
+            { text: "你认为哪种时刻，让你最有成就感？", options: [
+                { text: "解决了一个谁都没搞定的棘手细节", scores: { last: 2 } },
+                { text: "让原本意见不合的小组达成了共识", scores: { link: 2 } },
+                { text: "把一个复杂流程理顺了", scores: { builder: 2 } },
+                { text: "手头的复杂项目终于往前推进了一大步", scores: { doer: 2 } }
+            ]},
+            { text: "客户临时提出一个'几乎不可能'的新要求，你通常会？", options: [
+                { text: "想想有没有创新做法能实现", scores: { idea: 2, doer: 1 } },
+                { text: "先拆解问题，看能不能一步步实现", scores: { builder: 2, cpu: 1 } },
+                { text: "直接尝试一版初步方案", scores: { pioneer: 2, doer: 1 } },
+                { text: "先确认风险边界", scores: { last: 2 } }
+            ]},
+            { text: "项目进入最后冲刺阶段，你更可能在做什么？", options: [
+                { text: "一项项推进，确保全部完成", scores: { doer: 2 } },
+                { text: "做最终细节检查", scores: { last: 2 } },
+                { text: "确保整体节奏不失控", scores: { ctrl: 2 } },
+                { text: "稳定支持团队需要", scores: { cpu: 2 } }
+            ]},
+            { text: "团队遇到严重分歧时，你更可能扮演什么角色？", options: [
+                { text: "主动沟通，让大家重新理解彼此", scores: { link: 2 } },
+                { text: "分析每个人观点背后的逻辑", scores: { ctrl: 2 } },
+                { text: "找一个折中解决路径", scores: { builder: 2 } },
+                { text: "先推动能推进的部分", scores: { doer: 2 } }
+            ]},
+            { text: "面对一个全新领域项目，你第一时间的反应是？", options: [
+                { text: "兴奋感大于紧张", scores: { pioneer: 2 } },
+                { text: "想把结构搞清楚", scores: { builder: 2, cpu: 1 } },
+                { text: "想清楚风险", scores: { last: 2 } },
+                { text: "想有没有新玩法", scores: { idea: 2 } }
+            ]},
+            { text: "在别人看来，你最常被依赖的能力是？", options: [
+                { text: "推进事情落地", scores: { doer: 2 } },
+                { text: "提供稳定支持", scores: { cpu: 2 } },
+                { text: "拆解复杂问题", scores: { ctrl: 2 } },
+                { text: "提供创意点子", scores: { idea: 2 } }
+            ]},
+            { text: "当团队气氛明显变得紧张时，你通常会？", options: [
+                { text: "努力缓和团队气氛", scores: { link: 2 } },
+                { text: "转回到任务本身", scores: { doer: 2 } },
+                { text: "分析问题本质", scores: { ctrl: 2 } },
+                { text: "默默把事情做好", scores: { last: 2 } }
+            ]},
+            { text: "面对一个反复出错的任务，你会？", options: [
+                { text: "查找问题根源", scores: { ctrl: 2, last: 1 } },
+                { text: "重新梳理流程", scores: { builder: 2 } },
+                { text: "在反复尝试中修正细节", scores: { doer: 2 } },
+                { text: "修正方案", scores: { cpu: 2 } }
+            ]},
+            { text: "面对一个模糊需求，你更可能？", options: [
+                { text: "深挖真正需求", scores: { ctrl: 2 } },
+                { text: "提供多个创意方向", scores: { idea: 2 } },
+                { text: "做一个初步结构", scores: { builder: 2 } },
+                { text: "先跑一个版本", scores: { pioneer: 2, doer: 1 } }
+            ]},
+            { text: "团队进入长期项目，你通常会？", options: [
+                { text: "稳定输出", scores: { cpu: 2 } },
+                { text: "优化流程，以便长期的高效执行", scores: { builder: 2 } },
+                { text: "推动进度", scores: { doer: 2 } },
+                { text: "保持团队沟通，避免信息断层", scores: { link: 2 } }
+            ]},
+            { text: "当你发现别人忽略了关键细节，你会？", options: [
+                { text: "立即指出，避免出现错误", scores: { cpu: 2 } },
+                { text: "默默补上", scores: { last: 2 } },
+                { text: "调整流程避免再犯", scores: { builder: 2 } },
+                { text: "提醒团队注意", scores: { link: 2 } }
+            ]},
+            { text: "当你有一个新点子时，你通常会？", options: [
+                { text: "立刻提出", scores: { idea: 2, pioneer: 1 } },
+                { text: "先想是否可落地，再考虑要不要提出", scores: { builder: 2, last: 1 } },
+                { text: "先评估风险，再考虑要不要提出", scores: { last: 2, cpu: 1 } },
+                { text: "观察团队状况，现在是不是提出的最佳时机", scores: { ctrl: 2, cpu: 1 } }
+            ]},
+            { text: "当团队需要有人顶上关键位置时，你通常？", options: [
+                { text: "主动承担，确保团队工作顺利开展", scores: { last: 2 } },
+                { text: "稳定接手", scores: { cpu: 2 } },
+                { text: "辅助推动项目执行", scores: { doer: 2 } },
+                { text: "协调资源", scores: { link: 2 } }
+            ]},
+            { text: "面对工作中的质疑和指责，你的第一反应是？", options: [
+                { text: "认真聆听，反思自己做得不好的地方", scores: { cpu: 2, last: 1 } },
+                { text: "辩证看待，有则改之无则加勉", scores: { ctrl: 2, link: 1 } },
+                { text: "情绪受到影响，但是能辩证看待对方话语", scores: { doer: 2 } },
+                { text: "先了解对方质疑的具体依据，再决定如何回应", scores: { ctrl: 2, cpu: 1 } }
+            ]},
+            { text: "你对未来的职业规划是？", options: [
+                { text: "目标明确，有长期计划和短期规划", scores: { builder: 2, ctrl: 1 } },
+                { text: "目标明确，保持大方向准确", scores: { ctrl: 2 } },
+                { text: "没有明确的目标，专注把手头每一件事做好", scores: { doer: 2 } },
+                { text: "依据自己每个阶段的状态调整计划", scores: { pioneer: 2, doer: 1 } }
+            ]}
+        ];
+
+        const personalities = {
+            pioneer: {
+                name: "先行者", code: "PIONEER", color: "#FF6B6B",
+                quote: "世上本无路，只是走的人多了，便成了路。",
+                desc: "对'不可能'三个字过敏，听到就手痒想试试。工位上永远堆着3个'刚想到的好主意'，开会永远坐在第一排。",
+                teamRole: ["新业务从0到1的点火器", "僵局中突然甩出Plan C的破局者", "但也可能是把大家拖向第8个方向的始作俑者"],
+                light: "敢为天下先，让组织永远有少年气",
+                partners: ["兜底王", "搭建者"],
+                footnote: "先行的勇气不是莽撞，是对'我说了就要做到'的承诺。哪怕做到的不是最终答案，也一定是下一个更接近正确答案的版本。"
+            },
+            ctrl: {
+                name: "拿捏者", code: "CTRL", color: "#4ECDC4",
+                quote: "这事我盘过，你们放心做，有我在。",
+                desc: "开会时话不多，一开口往往就是：'这里有三个坑，我们按顺序填'。能在混乱中秒抓关键变量，别人焦虑时你异常冷静。",
+                teamRole: ["复杂项目的控盘手，把看似无序的信息拧成一条主线", "危机时刻的定海神针，让团队知道'一切尽在掌握'", "当一切都想被提前定义，团队可能就失去了探索未知的空间"],
+                light: "真正的掌控，不是把所有变量握在手里，而是让复杂的事情，有序地向前发生",
+                partners: ["推土机", "团队粘合剂"],
+                footnote: "拿捏的底气来自'我算过'，不是运气好。敢扛事的前提是敢认错，控盘的最高境界是控自己。"
+            },
+            builder: {
+                name: "搭建者", code: "BUILDER", color: "#45B7D1",
+                quote: "给我一块地，我不只搭自己的房子，我要让后来之人可以建出一座城。",
+                desc: "看到混乱的流程就像看到打结的耳机线，必须拆开重编。建SOP、搭方案、立制度，把零散经验变成人人可走的路。",
+                teamRole: ["组织能力的基建狂魔", "从1到N规模化时的工程师，让成功不靠运气，而靠系统", "但也可能在过度追求结构完整时，让事情变得比必要的更复杂"],
+                light: "让个人能力变成组织能力，让英雄主义变成集体肌肉",
+                partners: ["处理器", "先行者"],
+                footnote: "搭建不是搭架子，是搭舞台。真正好的系统，能让普通人也能做出不普通的结果。当经验能够被沉淀，当方法能够被复用，个人的能力，才真正变成组织的能力。"
+            },
+            doer: {
+                name: "推土机", code: "DO-iter", color: "#96CEB4",
+                quote: "路是不是对的，推一段就知道——不等答案，先把答案推出来。",
+                desc: "收到任务的第一反应不是'怎么做'，是'现在做，边做边想'。相信'完成比完美重要'，别人还在争论方案A还是B，你已经把A试了一轮、B跑了一遍。",
+                teamRole: ["执行阶段的人形进度条", "团队士气低落时的行动兴奋剂", "但也可能在过度追求推进速度时，让方向校准的空间变少"],
+                light: "让结果，比想象和讨论更有说服力",
+                partners: ["拿捏者", "处理器"],
+                footnote: "推土机的信誉不在'我推了'，在'我推到底了'。答应的交付，不只是启动，而是把事情，推到可以落地的那一刻。"
+            },
+            idea: {
+                name: "创想者", code: "IDEA", color: "#DDA0DD",
+                quote: "如果只有一条路，那我一定会先问——还有没有别的可能。",
+                desc: "头脑风暴会上，你的想象总能把讨论带向'另一种可能'。你不轻易接受'惯例'，更习惯问一句：'我们为什么一定要这么做？'",
+                teamRole: ["创新瓶颈期的破局触发器，让思路从单线变成多线", "同质化竞争中的差异化雷达，总能发现别人忽略的角度", "但也可能因为想法过多，让团队在选择中多停留了一步"],
+                light: "让组织保持'还能不一样'的警觉和兴奋",
+                partners: ["搭建者", "推土机"],
+                footnote: "创想不是乱想，是'有约束的破格'。好创意能回答'所以然后呢？'，不是停在'好酷啊'。真正有价值的创新，不是为了创造更多选项，而是为了让正确选项更有可能出现。"
+            },
+            last: {
+                name: "兜底王", code: "LAST", color: "#F4A460",
+                quote: "你们往前冲，我断后，一个都不许掉。",
+                desc: "项目上线前，别人在庆祝，你在检查还有没有遗漏的风险。能记住每个人随口提的困难，虽然对方自己都忘了。",
+                teamRole: ["风险盲区里的人形安全网，可能出问题的地方还有加厚补丁", "项目波动时的稳定器，让团队知道'就算出问题，也有人守着'", "但也可能因为过度兜底，让别人少了一点面对风险的成长空间"],
+                light: "因为你在，所以前面的人可以放心往前冲；因为你兜得住，所以团队才敢试错、敢突破、敢不完美",
+                partners: ["先行者", "团队粘合剂"],
+                footnote: "兜底不是擦屁股，是我信你能突破，所以我愿意守后方。真正的安全感，是让人敢犯错、敢再试。真正的责任感，不是替所有人扛，而是让每个人都知道——即使出错，也不会太糟糕。"
+            },
+            cpu: {
+                name: "处理器", code: "CPU", color: "#87CEEB",
+                quote: "给我输入，秒出输出，误差不超过小数点后三位。",
+                desc: "别人给的是'感觉不太对'，你会追问'具体是哪里不对？'。面对复杂信息，你习惯先拆结构，再找变量，而不是先下结论。",
+                teamRole: ["信息过载时的降噪耳机，筛选真正有用的信息", "决策场景的人形数据库，让选择不靠感觉，而靠理论", "但也可能过度理性，错过直觉的指引"],
+                light: "把混乱翻译成秩序，把直觉翻译成证据，让团队决策有底气",
+                partners: ["创想者", "拿捏者"],
+                footnote: "处理器的价值不在'算得快'，而是算得清楚，并且可追溯。真正的专业，不是给答案，而是让别人知道——这个答案是怎么来的。"
+            },
+            link: {
+                name: "团队粘合剂", code: "LINK", color: "#FFB6C1",
+                quote: "人和人之间的距离，不是靠制度拉近的，是靠一次次被记住的细节。",
+                desc: "能叫出很多同事的名字，也记得他们随口提过的小事。跨部门沟通卡壳时，你是第一个破冰让讨论继续进行的人。",
+                teamRole: ["组织之间的连接器，让信息不是断点，而是流动", "冲突场景的缓冲带，让对立不会直接变成对抗", "但也可能在过度维系关系时，让问题被暂时'变软'，而不是被解决"],
+                light: "是让大家即使不同，也愿意继续合作",
+                partners: ["拿捏者", "兜底王"],
+                footnote: "真正的连接，不是没有冲突，而是冲突之后，关系更加坚韧。粘合剂的价值，不是让大家都变得相同，而是让不同的人，依然可以一起把事情做成。"
+            }
+        };
+
+        let currentQuestion = 0;
+        let answers = new Array(questions.length).fill(null);
+        let scores = { pioneer: 0, ctrl: 0, builder: 0, doer: 0, idea: 0, last: 0, cpu: 0, link: 0 };
+
+        function startQuiz() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('quizArea').style.display = 'block';
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('questionCounter').textContent = `第 ${currentQuestion + 1} / ${questions.length} 题`;
+            document.getElementById('questionText').textContent = q.text;
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            const optionsHtml = q.options.map((opt, idx) => {
+                const selected = answers[currentQuestion] === idx ? 'selected' : '';
+                return `<button class="option ${selected}" onclick="selectOption(${idx})">${opt.text}</button>`;
+            }).join('');
+            document.getElementById('options').innerHTML = optionsHtml;
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            document.getElementById('nextBtn').textContent = currentQuestion === questions.length - 1 ? '查看结果' : '下一题';
+        }
+
+        function selectOption(idx) {
+            answers[currentQuestion] = idx;
+            document.querySelectorAll('.option').forEach((opt, i) => {
+                opt.classList.toggle('selected', i === idx);
+            });
+        }
+
+        function nextQuestion() {
+            if (answers[currentQuestion] === null) {
+                alert('请先选择一个答案');
+                return;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                showLoading();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('quizArea').style.display = 'none';
+            document.getElementById('loadingScreen').style.display = 'block';
+            setTimeout(() => { calculateResult(); }, 2000);
+        }
+
+        function calculateResult() {
+            scores = { pioneer: 0, ctrl: 0, builder: 0, doer: 0, idea: 0, last: 0, cpu: 0, link: 0 };
+            answers.forEach((ansIdx, qIdx) => {
+                if (ansIdx !== null) {
+                    const opt = questions[qIdx].options[ansIdx];
+                    for (let [key, val] of Object.entries(opt.scores)) {
+                        scores[key] += val;
+                    }
+                }
+            });
+            const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            showResult(sorted[0][0], sorted[1][0], sorted);
+        }
+
+        function showResult(primary, secondary, allScores) {
+            document.getElementById('loadingScreen').style.display = 'none';
+            const resultScreen = document.getElementById('resultScreen');
+            resultScreen.style.display = 'block';
+            const p = personalities[primary];
+            const s = personalities[secondary];
+            const maxScore = Math.max(...allScores.map(x => x[1]));
+            const scoreBars = allScores.map(([key, val]) => {
+                const pct = (val / maxScore) * 100;
+                const isPrimary = key === primary;
+                const color = isPrimary ? p.color : '#e0e0e0';
+                return `<div class="score-bar-item"><span class="score-bar-label">${personalities[key].name}</span><div class="score-bar-track"><div class="score-bar-fill" style="width: ${pct}%; background: ${color};"></div></div><span class="score-bar-value">${val}</span></div>`;
+            }).join('');
+
+            resultScreen.innerHTML = `
+                <div class="result-header">
+                    <div class="result-badge">赛龙22周年 · SBTI</div>
+                    <div class="result-title">${p.name}</div>
+                    <div class="result-code">${p.code}</div>
+                </div>
+                <div class="result-quote">"${p.quote}"</div>
+                <div class="result-section">
+                    <h3>你是这样的</h3>
+                    <p>${p.desc}</p>
+                </div>
+                <div class="result-section">
+                    <h3>团队里的你</h3>
+                    <ul>${p.teamRole.map(r => `<li>${r}</li>`).join('')}</ul>
+                </div>
+                <div class="result-section">
+                    <h3>你的光</h3>
+                    <p style="color: ${p.color}; font-weight: 600;">${p.light}</p>
+                </div>
+                <div class="result-section">
+                    <h3>最佳拍档</h3>
+                    <p>${p.partners.map(partner => `<span class="partner-tag">${partner}</span>`).join('')}</p>
+                    <p style="margin-top: 10px; font-size: 13px; color: #888;">
+                        你的副人格是 <strong style="color: ${s.color};">${s.name}</strong>（${s.code}），这意味着你除了${p.name}的核心特质外，还具备${s.name}的${s.light.split('，')[0]}能力。
+                    </p>
+                </div>
+                <div class="result-section">
+                    <h3>人格能量分布</h3>
+                    <div class="score-bars">${scoreBars}</div>
+                </div>
+                <div class="footnote">
+                    <strong>${p.name}注脚：</strong>${p.footnote}<br><br>
+                    在赛龙，我们从不要求每个人都一样。<br>
+                    有人负责点火，有人擅长收尾，有人负责把火种变成燎原之势。<br>
+                    <strong>正因为我们不一样，所以我们在一起更好。</strong>
+                </div>
+                <button class="restart-btn" onclick="restartQuiz()">再测一次</button>
+            `;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = new Array(questions.length).fill(null);
+            scores = { pioneer: 0, ctrl: 0, builder: 0, doer: 0, idea: 0, last: 0, cpu: 0, link: 0 };
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
