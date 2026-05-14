@@ -5,18 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>赛龙22周年 · SLTI人格测评</title>
     <style>
-        :root {
-            --cyan-light: #00E6DC;
-            --green-dark: #056E50;
-            --accent-gold: #D4A574;
-            --text-dark: #1E293B;
-            --text-mid: #475569;
-            --text-light: #94A3B8;
-            --bg-light: #F0FDF9;
-        }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
             background: linear-gradient(to top right, #00E6DC 0%, #056E50 100%);
@@ -26,7 +15,6 @@
             align-items: center;
             padding: 20px;
         }
-
         .container {
             background: #fff;
             border-radius: 24px;
@@ -37,7 +25,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .container::before {
             content: '';
             position: absolute;
@@ -45,14 +32,11 @@
             height: 6px;
             background: linear-gradient(90deg, #00E6DC, #056E50);
         }
-
-        /* ===== 活动Logo区域 ===== */
         .event-logo {
             text-align: center;
             margin-bottom: 24px;
             padding: 16px;
         }
-
         .event-logo img {
             max-width: 320px;
             max-height: 120px;
@@ -60,63 +44,26 @@
             height: auto;
             object-fit: contain;
         }
-
-        /* ===== 首页 ===== */
         .start-screen { text-align: center; padding: 10px 0 20px; }
-
-        .anniversary-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #00E6DC, #056E50);
-            border-radius: 20px;
-            margin: 0 auto 20px;
-            box-shadow: 0 8px 20px rgba(0, 230, 220, 0.3);
-        }
-
-        .anniversary-badge span {
-            color: #fff;
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-
-        .badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #00E6DC, #056E50);
-            color: #fff;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-        }
-
         .start-screen h1 {
             font-size: 32px;
-            color: var(--text-dark);
+            color: #1E293B;
             margin-bottom: 12px;
             font-weight: 700;
         }
-
         .start-screen .subtitle {
             font-size: 18px;
             color: #056E50;
             margin-bottom: 28px;
             font-weight: 500;
         }
-
         .start-screen .desc {
-            color: var(--text-mid);
+            color: #475569;
             font-size: 15px;
             line-height: 1.8;
             margin-bottom: 36px;
             padding: 0 20px;
         }
-
         .start-btn {
             background: linear-gradient(135deg, #00E6DC, #056E50);
             color: #fff;
@@ -129,15 +76,11 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 230, 220, 0.4);
         }
-
         .start-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 230, 220, 0.5);
         }
-
-        /* ===== 答题页 ===== */
         .quiz-area { display: none; }
-
         .progress-bar {
             width: 100%;
             height: 8px;
@@ -146,130 +89,93 @@
             margin-bottom: 32px;
             overflow: hidden;
         }
-
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #00E6DC, #056E50);
             border-radius: 4px;
             transition: width 0.5s ease;
         }
-
         .question-counter {
             text-align: center;
-            color: var(--text-light);
+            color: #94A3B8;
             font-size: 14px;
             margin-bottom: 8px;
             letter-spacing: 1px;
         }
-
         .question-text {
             font-size: 20px;
-            color: var(--text-dark);
+            color: #1E293B;
             font-weight: 600;
             margin-bottom: 32px;
             line-height: 1.6;
             padding: 0 8px;
         }
-
         .options {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
-
         .option {
-            background: var(--bg-light);
+            background: #F0FDF9;
             border: 2px solid #E2E8F0;
             border-radius: 16px;
             padding: 18px 24px;
             cursor: pointer;
             transition: all 0.25s ease;
             font-size: 15px;
-            color: var(--text-dark);
+            color: #1E293B;
             line-height: 1.5;
             text-align: left;
             position: relative;
             overflow: hidden;
         }
-
         .option:hover {
             border-color: #00E6DC;
             background: #E6FFFB;
             transform: translateX(4px);
         }
-
         .option.selected {
             border-color: #00E6DC;
             background: linear-gradient(135deg, rgba(0,230,220,0.08), rgba(5,110,80,0.08));
             color: #056E50;
             font-weight: 500;
         }
-
-        .option::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            right: 20px;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #CBD5E1;
-            border-radius: 50%;
-            transform: translateY(-50%);
-            transition: all 0.3s ease;
-        }
-
-        .option:hover::after, .option.selected::after {
-            border-color: #00E6DC;
-            background: #00E6DC;
-        }
-
-        .option.selected::after {
-            background: #00E6DC url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E") center/12px no-repeat;
-        }
-
         .nav-btns {
             display: flex;
             justify-content: space-between;
             margin-top: 32px;
             gap: 16px;
         }
-
         .nav-btn {
             padding: 12px 28px;
             border-radius: 24px;
             border: 2px solid #E2E8F0;
             background: #fff;
-            color: var(--text-mid);
+            color: #475569;
             font-size: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 500;
         }
-
         .nav-btn:hover:not(:disabled) {
             border-color: #00E6DC;
             color: #056E50;
         }
-
         .nav-btn:disabled {
             opacity: 0.4;
             cursor: not-allowed;
         }
-
         .nav-btn.next {
             background: linear-gradient(135deg, #00E6DC, #056E50);
             color: #fff;
             border: none;
             box-shadow: 0 4px 12px rgba(0, 230, 220, 0.3);
         }
-
-        /* ===== 加载页 ===== */
         .loading-screen {
             display: none;
             text-align: center;
             padding: 60px 20px;
         }
-
         .spinner {
             width: 60px;
             height: 60px;
@@ -279,22 +185,13 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 24px;
         }
-
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* ===== 结果页 ===== */
         .result-screen { display: none; animation: fadeIn 0.6s ease; }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .result-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
+        .result-header { text-align: center; margin-bottom: 20px; }
         .result-badge {
             display: inline-block;
             background: linear-gradient(135deg, #00E6DC, #056E50);
@@ -304,8 +201,6 @@
             font-size: 13px;
             margin-bottom: 16px;
         }
-
-        /* 人格IP形象区域 */
         .character-area {
             text-align: center;
             margin: 16px 0 24px;
@@ -313,7 +208,6 @@
             background: linear-gradient(135deg, rgba(0,230,220,0.06), rgba(5,110,80,0.06));
             border-radius: 20px;
         }
-
         .character-img {
             width: 220px;
             height: 220px;
@@ -322,21 +216,18 @@
             border-radius: 16px;
             filter: drop-shadow(0 8px 20px rgba(0,0,0,0.1));
         }
-
         .result-title {
             font-size: 28px;
-            color: var(--text-dark);
+            color: #1E293B;
             font-weight: 700;
             margin-bottom: 8px;
         }
-
         .result-code {
             font-size: 14px;
             color: #056E50;
             font-weight: 600;
             letter-spacing: 2px;
         }
-
         .result-quote {
             background: linear-gradient(135deg, #F0FDF9, #E6FFFB);
             border-left: 4px solid #00E6DC;
@@ -344,24 +235,19 @@
             border-radius: 0 12px 12px 0;
             margin: 24px 0;
             font-size: 16px;
-            color: var(--text-mid);
+            color: #475569;
             line-height: 1.7;
             font-style: italic;
         }
-
-        .result-section {
-            margin: 24px 0;
-        }
-
+        .result-section { margin: 24px 0; }
         .result-section h3 {
             font-size: 16px;
-            color: var(--text-dark);
+            color: #1E293B;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-
         .result-section h3::before {
             content: '';
             width: 4px;
@@ -369,31 +255,23 @@
             background: linear-gradient(180deg, #00E6DC, #056E50);
             border-radius: 2px;
         }
-
         .result-section p, .result-section li {
-            color: var(--text-mid);
+            color: #475569;
             font-size: 14px;
             line-height: 1.8;
         }
-
-        .result-section ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
+        .result-section ul { list-style: none; padding-left: 0; }
         .result-section li {
             padding: 6px 0;
             padding-left: 20px;
             position: relative;
         }
-
         .result-section li::before {
             content: '▸';
             position: absolute;
             left: 0;
             color: #00E6DC;
         }
-
         .partner-tag {
             display: inline-block;
             background: #E6FFFB;
@@ -404,7 +282,6 @@
             margin: 2px;
             font-weight: 500;
         }
-
         .footnote {
             background: linear-gradient(135deg, rgba(0,230,220,0.05), rgba(5,110,80,0.05));
             border: 1px dashed rgba(0,230,220,0.3);
@@ -412,18 +289,14 @@
             padding: 20px;
             margin-top: 28px;
             font-size: 14px;
-            color: var(--text-mid);
+            color: #475569;
             line-height: 1.8;
         }
-
         .footnote strong { color: #056E50; }
-
-        /* 分享按钮区域 */
         .share-section {
             margin: 24px 0;
             text-align: center;
         }
-
         .share-btn {
             display: inline-flex;
             align-items: center;
@@ -439,22 +312,18 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 230, 220, 0.4);
         }
-
         .share-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 230, 220, 0.5);
         }
-
         .share-btn.copied {
             background: linear-gradient(135deg, #10B981, #059669);
         }
-
         .share-hint {
             margin-top: 12px;
             font-size: 13px;
-            color: var(--text-light);
+            color: #94A3B8;
         }
-
         .restart-btn {
             display: block;
             width: 100%;
@@ -469,27 +338,22 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
         .restart-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 230, 220, 0.4);
         }
-
         .score-bars { margin: 20px 0; }
-
         .score-bar-item {
             display: flex;
             align-items: center;
             margin: 10px 0;
             font-size: 13px;
         }
-
         .score-bar-label {
             width: 80px;
-            color: var(--text-mid);
+            color: #475569;
             font-weight: 500;
         }
-
         .score-bar-track {
             flex: 1;
             height: 8px;
@@ -498,42 +362,33 @@
             margin: 0 12px;
             overflow: hidden;
         }
-
         .score-bar-fill {
             height: 100%;
             border-radius: 4px;
             transition: width 1s ease;
         }
-
         .score-bar-value {
             width: 30px;
             text-align: right;
             color: #056E50;
             font-weight: 600;
         }
-
-        /* 响应式 */
         @media (max-width: 480px) {
             .container { padding: 32px 20px 40px; border-radius: 20px; }
             .start-screen h1 { font-size: 26px; }
             .question-text { font-size: 18px; }
             .option { padding: 16px 18px; font-size: 14px; }
             .character-img { width: 180px; height: 180px; }
-            .company-logo img { max-width: 160px; max-height: 55px; }
-            .anniversary-badge { width: 70px; height: 70px; }
-            .anniversary-badge span { font-size: 24px; }
+            .event-logo img { max-width: 280px; max-height: 100px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- 首页 -->
         <div class="start-screen" id="startScreen">
-            <!-- 赛龙22周年活动Logo -->
             <div class="event-logo">
                 <img src="data:image/png;base64,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" alt="赛龙22周年 Better 2gether">
             </div>
-
             <h1>赛龙22周年SLTI</h1>
             <p class="subtitle">22道题，读懂你的职场人格基因</p>
             <p class="desc">
@@ -543,8 +398,6 @@
             </p>
             <button class="start-btn" onclick="startQuiz()">开始测试</button>
         </div>
-
-        <!-- 答题页 -->
         <div class="quiz-area" id="quizArea">
             <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
             <div class="question-counter" id="questionCounter">第 1 / 22 题</div>
@@ -555,20 +408,13 @@
                 <button class="nav-btn next" id="nextBtn" onclick="nextQuestion()">下一题</button>
             </div>
         </div>
-
-        <!-- 加载页 -->
         <div class="loading-screen" id="loadingScreen">
             <div class="spinner"></div>
-            <p style="color: var(--text-mid);">正在解析你的职场人格基因...</p>
+            <p style="color: #475569;">正在解析你的职场人格基因...</p>
         </div>
-
-        <!-- 结果页 -->
         <div class="result-screen" id="resultScreen"></div>
     </div>
-
     <script>
-
-        // 图片路径映射 - 需要上传到GitHub仓库根目录
         const characterImages = {
             pioneer: './先行者(1).png',
             ctrl: './拿捏者(1).png',
@@ -580,57 +426,56 @@
             link: './粘合剂(1).jpg'
         };
 
-        // 分享文案配置
         const shareTexts = {
-            pioneer: '我在赛龙22周年SLTI测评中测出了【先行者PIONEER】人格
+            pioneer: `我在赛龙22周年SLTI测评中测出了【先行者PIONEER】人格
 "世上本无路，走的人多了，便有了路。"
 
 快来测测你是什么人格？👇
 https://bella81511.github.io/sbti-quiz-22/
-#赛龙22周年 #SLTI人格测评 #Better2gether',
-            ctrl: '我在赛龙22周年SLTI测评中测出了【拿捏者CTRL】人格
+#赛龙22周年 #SLTI人格测评 #Better2gether`,
+            ctrl: `我在赛龙22周年SLTI测评中测出了【拿捏者CTRL】人格
 需求我拆解过，方向我来校正，你们放心走。
 
 快来测测你是什么人格？👇
 https://bella81511.github.io/sbti-quiz-22/
-#赛龙22周年 #SLTI人格测评 #Better2gether',
-            builder: '我在赛龙22周年SLTI测评中测出了【搭建者BUILDER】人格
+#赛龙22周年 #SLTI人格测评 #Better2gether`,
+            builder: `我在赛龙22周年SLTI测评中测出了【搭建者BUILDER】人格
 让个人能力变成组织能力，让英雄主义变成集体肌肉。
 
 快来测测你是什么人格？👇
 https://bella81511.github.io/sbti-quiz-22/
-#赛龙22周年 #SLTI人格测评 #Better2gether',
-            doer: '我在赛龙22周年SLTI测评中测出了【推土机DO-ITer】人格
+#赛龙22周年 #SLTI人格测评 #Better2gether`,
+            doer: `我在赛龙22周年SLTI测评中测出了【推土机DO-ITer】人格
 让结果，比想象和讨论更有说服力。
 
 快来测测你是什么人格？👇
 https://bella81511.github.io/sbti-quiz-22/
-#赛龙22周年 #SLTI人格测评 #Better2gether',
-            idea: '我在赛龙22周年SLTI测评中测出了【创想者IDEA】人格
+#赛龙22周年 #SLTI人格测评 #Better2gether`,
+            idea: `我在赛龙22周年SLTI测评中测出了【创想者IDEA】人格
 如果你告诉我以前都是这么做的，那我一定会先问：还有没有更好的方法？
 
 快来测测你是什么人格？👇
 https://bella81511.github.io/sbti-quiz-22/
-#赛龙22周年 #SLTI人格测评 #Better2gether',
-            last: '我在赛龙22周年SLTI测评中测出了【兜底王LAST】人格
+#赛龙22周年 #SLTI人格测评 #Better2gether`,
+            last: `我在赛龙22周年SLTI测评中测出了【兜底王LAST】人格
 
 因为有你在，前面的人才敢放心冲。
 
 快来测测你是什么人格？👇
 https://bella81511.github.io/sbti-quiz-22/
-#赛龙22周年 #SLTI人格测评 #Better2gether',
-            cpu: '我在赛龙22周年SLTI测评中测出了【处理器CPU】人格
+#赛龙22周年 #SLTI人格测评 #Better2gether`,
+            cpu: `我在赛龙22周年SLTI测评中测出了【处理器CPU】人格
 把混乱转换成秩序，把直觉翻译成依据。
 
 快来测测你是什么人格？👇
 https://bella81511.github.io/sbti-quiz-22/
-#赛龙22周年 #SLTI人格测评 #Better2gether',
-            link: '我在赛龙22周年SLTI测评中测出了【团队粘合剂LINK】人格
+#赛龙22周年 #SLTI人格测评 #Better2gether`,
+            link: `我在赛龙22周年SLTI测评中测出了【团队粘合剂LINK】人格
 人和人之间距离的拉近，是靠一次次被记住的细节。
 
 快来测测你是什么人格？👇
 https://bella81511.github.io/sbti-quiz-22/
-#赛龙22周年 #SLTI人格测评 #Better2gether'
+#赛龙22周年 #SLTI人格测评 #Better2gether`
         };
 
         const questions = [
@@ -855,14 +700,15 @@ https://bella81511.github.io/sbti-quiz-22/
 
         function renderQuestion() {
             const q = questions[currentQuestion];
-            document.getElementById('questionCounter').textContent = `第 ${currentQuestion + 1} / ${questions.length} 题`;
+            document.getElementById('questionCounter').textContent = '第 ' + (currentQuestion + 1) + ' / ' + questions.length + ' 题';
             document.getElementById('questionText').textContent = q.text;
             const progress = ((currentQuestion + 1) / questions.length) * 100;
             document.getElementById('progressFill').style.width = progress + '%';
-            const optionsHtml = q.options.map((opt, idx) => {
-                const selected = answers[currentQuestion] === idx ? 'selected' : '';
-                return `<button class="option ${selected}" onclick="selectOption(${idx})">${opt.text}</button>`;
-            }).join('');
+            let optionsHtml = '';
+            for (let i = 0; i < q.options.length; i++) {
+                const selected = answers[currentQuestion] === i ? 'selected' : '';
+                optionsHtml += '<button class="option ' + selected + '" onclick="selectOption(' + i + ')">' + q.options[i].text + '</button>';
+            }
             document.getElementById('options').innerHTML = optionsHtml;
             document.getElementById('prevBtn').disabled = currentQuestion === 0;
             document.getElementById('nextBtn').textContent = currentQuestion === questions.length - 1 ? '查看结果' : '下一题';
@@ -870,9 +716,10 @@ https://bella81511.github.io/sbti-quiz-22/
 
         function selectOption(idx) {
             answers[currentQuestion] = idx;
-            document.querySelectorAll('.option').forEach((opt, i) => {
-                opt.classList.toggle('selected', i === idx);
-            });
+            const opts = document.querySelectorAll('.option');
+            for (let i = 0; i < opts.length; i++) {
+                opts[i].classList.toggle('selected', i === idx);
+            }
         }
 
         function nextQuestion() {
@@ -898,35 +745,39 @@ https://bella81511.github.io/sbti-quiz-22/
         function showLoading() {
             document.getElementById('quizArea').style.display = 'none';
             document.getElementById('loadingScreen').style.display = 'block';
-            setTimeout(() => { calculateResult(); }, 2000);
+            setTimeout(function() { calculateResult(); }, 2000);
         }
 
         function calculateResult() {
             scores = { pioneer: 0, ctrl: 0, builder: 0, doer: 0, idea: 0, last: 0, cpu: 0, link: 0 };
-            answers.forEach((ansIdx, qIdx) => {
-                if (ansIdx !== null) {
-                    const opt = questions[qIdx].options[ansIdx];
-                    for (let [key, val] of Object.entries(opt.scores)) {
-                        scores[key] += val;
+            for (let i = 0; i < answers.length; i++) {
+                if (answers[i] !== null) {
+                    const opt = questions[i].options[answers[i]];
+                    for (let key in opt.scores) {
+                        scores[key] += opt.scores[key];
                     }
                 }
-            });
-            const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            }
+            const sorted = [];
+            for (let key in scores) {
+                sorted.push([key, scores[key]]);
+            }
+            sorted.sort(function(a, b) { return b[1] - a[1]; });
             showResult(sorted[0][0], sorted[1][0], sorted);
         }
 
         function copyShareText() {
-            const primary = document.querySelector('.result-title').dataset.personality;
+            const primary = document.querySelector('.result-title').getAttribute('data-personality');
             const text = shareTexts[primary];
-            navigator.clipboard.writeText(text).then(() => {
+            navigator.clipboard.writeText(text).then(function() {
                 const btn = document.querySelector('.share-btn');
                 btn.textContent = '✓ 已复制';
                 btn.classList.add('copied');
-                setTimeout(() => {
+                setTimeout(function() {
                     btn.textContent = '📋 复制分享文案';
                     btn.classList.remove('copied');
                 }, 2000);
-            }).catch(() => {
+            }).catch(function() {
                 alert('复制失败，请手动复制');
             });
         }
@@ -937,64 +788,21 @@ https://bella81511.github.io/sbti-quiz-22/
             resultScreen.style.display = 'block';
             const p = personalities[primary];
             const s = personalities[secondary];
-            const maxScore = Math.max(...allScores.map(x => x[1]));
-            const scoreBars = allScores.map(([key, val]) => {
+            const maxScore = Math.max.apply(null, allScores.map(function(x) { return x[1]; }));
+            let scoreBars = '';
+            for (let i = 0; i < allScores.length; i++) {
+                const key = allScores[i][0];
+                const val = allScores[i][1];
                 const pct = (val / maxScore) * 100;
                 const isPrimary = key === primary;
                 const color = isPrimary ? p.color : '#e0e0e0';
-                return `<div class="score-bar-item"><span class="score-bar-label">${personalities[key].name}</span><div class="score-bar-track"><div class="score-bar-fill" style="width: ${pct}%; background: ${color};"></div></div><span class="score-bar-value">${val}</span></div>`;
-            }).join('');
+                scoreBars += '<div class="score-bar-item"><span class="score-bar-label">' + personalities[key].name + '</span><div class="score-bar-track"><div class="score-bar-fill" style="width: ' + pct + '%; background: ' + color + ';"></div></div><span class="score-bar-value">' + val + '</span></div>';
+            }
 
             const characterImg = characterImages[primary];
-            const characterHtml = `
-                <div class="character-area">
-                    <img src="${characterImg}" alt="${p.name}" class="character-img" onerror="this.style.display='none'">
-                </div>
-            `;
+            const characterHtml = '<div class="character-area"><img src="' + characterImg + '" alt="' + p.name + '" class="character-img" onerror="this.style.display='none'"></div>';
 
-            resultScreen.innerHTML = `
-                <div class="result-header">
-                    <div class="result-badge">赛龙22周年 · SLTI</div>
-                    <div class="result-title" data-personality="${primary}">${p.name}</div>
-                    <div class="result-code">${p.code}</div>
-                </div>
-                ${characterHtml}
-                <div class="result-quote">"${p.quote}"</div>
-                <div class="result-section">
-                    <h3>你是这样的</h3>
-                    <p>${p.desc}</p>
-                </div>
-                <div class="result-section">
-                    <h3>团队里的你</h3>
-                    <ul>${p.teamRole.map(r => `<li>${r}</li>`).join('')}</ul>
-                </div>
-                <div class="result-section">
-                    <h3>你的光</h3>
-                    <p style="color: ${p.color}; font-weight: 600;">${p.light}</p>
-                </div>
-                <div class="result-section">
-                    <h3>最佳拍档</h3>
-                    <p>${p.partners.map(partner => `<span class="partner-tag">${partner}</span>`).join('')}</p>
-                    <p style="margin-top: 10px; font-size: 13px; color: #888;">
-                        你的副人格是 <strong style="color: ${s.color};">${s.name}</strong>（${s.code}），这意味着你除了${p.name}的核心特质外，还具备${s.name}的${s.light.split('，')[0]}能力。
-                    </p>
-                </div>
-                <div class="result-section">
-                    <h3>人格能量分布</h3>
-                    <div class="score-bars">${scoreBars}</div>
-                </div>
-                <div class="share-section">
-                    <button class="share-btn" onclick="copyShareText()">📋 复制分享文案</button>
-                    <p class="share-hint">复制后可直接粘贴到朋友圈/小红书/微博</p>
-                </div>
-                <div class="footnote">
-                    <strong>${p.name}注脚：</strong>${p.footnote}<br><br>
-                    在赛龙，我们从不要求每个人都一样。<br>
-                    有人负责点火，有人擅长收尾，有人负责把火种变成燎原之势。<br>
-                    <strong>正因为我们不一样，所以我们在一起更好。</strong>
-                </div>
-                <button class="restart-btn" onclick="restartQuiz()">再测一次</button>
-            `;
+            resultScreen.innerHTML = '<div class="result-header"><div class="result-badge">赛龙22周年 · SLTI</div><div class="result-title" data-personality="' + primary + '">' + p.name + '</div><div class="result-code">' + p.code + '</div></div>' + characterHtml + '<div class="result-quote">"' + p.quote + '"</div><div class="result-section"><h3>你是这样的</h3><p>' + p.desc + '</p></div><div class="result-section"><h3>团队里的你</h3><ul>' + p.teamRole.map(function(r) { return '<li>' + r + '</li>'; }).join('') + '</ul></div><div class="result-section"><h3>你的光</h3><p style="color: ' + p.color + '; font-weight: 600;">' + p.light + '</p></div><div class="result-section"><h3>最佳拍档</h3><p>' + p.partners.map(function(partner) { return '<span class="partner-tag">' + partner + '</span>'; }).join('') + '</p><p style="margin-top: 10px; font-size: 13px; color: #888;">你的副人格是 <strong style="color: ' + s.color + ';">' + s.name + '</strong>（' + s.code + '），这意味着你除了' + p.name + '的核心特质外，还具备' + s.name + '的' + s.light.split('，')[0] + '能力。</p></div><div class="result-section"><h3>人格能量分布</h3><div class="score-bars">' + scoreBars + '</div></div><div class="share-section"><button class="share-btn" onclick="copyShareText()">📋 复制分享文案</button><p class="share-hint">复制后可直接粘贴到朋友圈/小红书/微博</p></div><div class="footnote"><strong>' + p.name + '注脚：</strong>' + p.footnote + '<br><br>在赛龙，我们从不要求每个人都一样。<br>有人负责点火，有人擅长收尾，有人负责把火种变成燎原之势。<br><strong>正因为我们不一样，所以我们在一起更好。</strong></div><button class="restart-btn" onclick="restartQuiz()">再测一次</button>';
         }
 
         function restartQuiz() {
